@@ -1,0 +1,5 @@
+<h2>Your Ads</h2>
+<a href="/create_ad">Create Ad</a>
+{% for ad in ads %}
+    <p>{{ ad.title }} - {{ ad.status }}</p>
+{% endfor %}

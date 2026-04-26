@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdSphere - Smart Advertising Platform</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #0b0f19;
+    color: #e5e7eb;
+}
+
+/* NAVBAR */
+.navbar {
+    background: rgba(10, 14, 25, 0.8) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* HERO */
+.hero {
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    background: url("{{ url_for('static', filename='images/banner.JPG') }}") center/cover no-repeat;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.4), #0b0f19 80%);
+}
+
+.hero-content {
+    position: relative;
+    max-width: 800px;
+    animation: fadeUp 1.2s ease-out;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* SECTIONS */
+.section {
+    padding: 80px 0;
+}
+
+/* FEATURE / CARD */
+.feature {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    border-color: #4f46e5;
+}
+
+/* BUTTON */
+.btn-primary {
+    background: #4f46e5;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+}
+
+/* STATS */
+.stats {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 40px;
+}
+
+/* FOOTER */
+footer {
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid #1f2937;
+    color: #9ca3af;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<div class="container">
+    <a class="navbar-brand fw-bold" href="/">AdSphere</a>
+
+    <div class="ms-auto">
+        <a href="/" class="text-light me-3 text-decoration-none">Home</a>
+        <a href="/dashboard" class="text-light me-3 text-decoration-none">Dashboard</a>
+        <a href="/create_ad" class="btn btn-primary btn-sm">Create Ad</a>
+    </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="display-4 fw-bold">Run Ads That Convert 🚀</h1>
+        <p class="mt-3 text-secondary">
+            Create, target, and track ads with real-time performance analytics.
+        </p>
+
+        <div class="mt-4">
+            <a href="/register" class="btn btn-primary px-4 py-2">Get Started</a>
+            <a href="/dashboard" class="btn btn-outline-light px-4 py-2 ms-2">View Dashboard</a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<div class="container section">
+    <div class="text-center mb-5">
+        <h2>Powerful Features</h2>
+        <p class="text-secondary">Everything you need to scale your ads</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="feature text-center">
+                <h5>📊 Analytics</h5>
+                <p class="text-secondary">Track performance in real-time.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature text-center">
+                <h5>🎯 Targeting</h5>
+                <p class="text-secondary">Reach the right audience easily.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature text-center">
+                <h5>⚡ Fast Ads</h5>
+                <p class="text-secondary">Instant ad publishing system.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- LIVE ADS SECTION (IMPORTANT FIX) -->
+<div class="container section">
+
+    <div class="text-center mb-5">
+        <h2>Live Ads</h2>
+        <p class="text-secondary">Recently created campaigns</p>
+    </div>
+
+    <div class="row g-4">
+
+        {% if ads %}
+            {% for ad in ads %}
+                <div class="col-md-4">
+                    <div class="feature">
+
+                        <img src="{{ url_for('static', filename='uploads/' + ad.image) }}"
+                             class="img-fluid rounded mb-3"
+                             style="height: 180px; width: 100%; object-fit: cover;">
+
+                        <h5>{{ ad.title }}</h5>
+
+                        <a href="{{ url_for('ads.click', id=ad.id) }}"
+                           class="btn btn-primary btn-sm mt-2">
+                           View Ad
+                        </a>
+
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center text-secondary">
+                No ads available yet. Create the first one 🚀
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="container section text-center">
+    <h2>How It Works</h2>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+            <h3 class="text-primary">1</h3>
+            <h5>Create Ad</h5>
+            <p class="text-secondary">Upload your campaign.</p>
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="text-primary">2</h3>
+            <h5>Target Users</h5>
+            <p class="text-secondary">Select audience.</p>
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="text-primary">3</h3>
+            <h5>Track Results</h5>
+            <p class="text-secondary">View analytics.</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="container section">
+    <div class="stats text-center">
+
+        <div class="row">
+            <div class="col-md-4">
+                <h2 class="text-primary">10K+</h2>
+                <p>Ads Created</p>
+            </div>
+
+            <div class="col-md-4">
+                <h2 class="text-primary">5K+</h2>
+                <p>Users</p>
+            </div>
+
+            <div class="col-md-4">
+                <h2 class="text-primary">1M+</h2>
+                <p>Clicks Tracked</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="container section text-center">
+    <h2>Ready to grow your business?</h2>
+    <p class="text-secondary">Start your first campaign in minutes.</p>
+    <a href="/register" class="btn btn-primary px-4 py-2 mt-2">Get Started</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p class="fw-bold">AdSphere</p>
+    <p>Smart advertising for modern businesses</p>
+    <small>© 2026 AdSphere | Built with Flask 🚀</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
